@@ -1,0 +1,96 @@
+@import './base.css';
+
+#app {
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 2rem 0;
+  min-height: 100vh;
+}
+
+h1 {
+  font-size: var(--text-3xl);
+  font-weight: 700;
+  line-height: var(--text-3xl--line-height);
+  letter-spacing: var(--text-3xl--letter-spacing);
+}
+
+@media (max-width: 2em) {
+  h1 {
+    font-size: var(--text-2xl);
+    font-weight: 700;
+    line-height: var(--text-2xl--line-height);
+    letter-spacing: var(--text-2xl--letter-spacing);
+  }
+}
+
+h2 {
+  font-size: var(--text-3xl);
+  line-height: var(--text-3xl--line-height);
+  letter-spacing: var(--text-3xl--letter-spacing);
+}
+
+h3 {
+  font-size: var(--text-xl);
+  font-weight: 600;
+  line-height: var(--text-xl--line-height);
+  letter-spacing: var(--text-xl--letter-spacing);
+}
+
+.text-lg {
+  font-size: var(--text-lg);
+  font-weight: 400;
+  line-height: var(--text-lg--line-height);
+  letter-spacing: var(--text-lg--letter-spacing);
+}
+
+.text-md {
+  font-size: var(--text-md);
+  font-weight: 400;
+  line-height: var(--text-md--line-height);
+  letter-spacing: var(--text-md--letter-spacing);
+}
+
+.app-checkbox {
+  width: 1rem;
+  height: 1rem;
+
+  background: none;
+  border-radius: var(--radius-4);
+  border: 1px solid var(--checkbox-border);
+
+  cursor: pointer;
+}
+.app-checkbox:hover {
+  background-color: var(--color-accent);
+}
+
+button {
+  display: flex;
+  align-items: center;
+
+  padding: 0.6875rem;
+  background: none;
+  border: none;
+  border-radius: var(--radius-8);
+  cursor: pointer;
+}
+
+textarea {
+  border: 1px solid var(--color-border);
+}
+textarea::placeholder {
+  color: inherit;
+  font-size: inherit;
+  font-family: inherit;
+}
+
+button,
+textarea {
+  font-family: inherit;
+  color: inherit;
+  background-color: var(--color-input);
+}
+button:hover,
+textarea:hover {
+  background-color: var(--color-input--hover);
+}
