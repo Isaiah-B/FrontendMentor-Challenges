@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { ref } from 'vue';
 import { storeToRefs } from 'pinia';
 
 import { useCounterStore } from '@/stores/counter';
@@ -10,6 +11,8 @@ import DensityChart from './DensityChart.vue';
 const store = useCounterStore();
 
 const { charLimit } = storeToRefs(store);
+
+const excludeSpaces = ref(false);
 
 const textareaMaxLength = charLimit.value.hasLimit ? charLimit.value.limit : undefined;
 </script>
@@ -26,7 +29,7 @@ const textareaMaxLength = charLimit.value.hasLimit ? charLimit.value.limit : und
 
     <div class="textarea-footer">
       <div class="filters">
-        <Filter label="Exclude Spaces" v-model="store.excludeSpaces" />
+        <Filter label="Exclude Spaces" v-model="excludeSpaces" />
         <Filter label="Set Character Limit" v-model="store.charLimit.hasLimit" />
       </div>
 
@@ -36,7 +39,7 @@ const textareaMaxLength = charLimit.value.hasLimit ? charLimit.value.limit : und
     <div class="cards">
       <Card
         label="Total Characters"
-        :value="store.characters.count"
+        :value="store.getCharacters({ spaces: !excludeSpaces }).count"
         color="#d3a0fa"
         icon-path="/src/assets/images/pattern-character-count.svg"
       />

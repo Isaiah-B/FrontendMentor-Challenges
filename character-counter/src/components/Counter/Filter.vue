@@ -10,10 +10,10 @@ const props = defineProps({
 const emit = defineEmits(['update:modelValue']);
 const model = computed({
   get() {
-    return props.modelValue
+    return props.modelValue;
   },
   set(value) {
-    emit('update:modelValue', value)
+    emit('update:modelValue', value);
   },
 });
 </script>
@@ -33,6 +33,9 @@ label {
   align-items: center;
   gap: 0.625rem;
   cursor: pointer;
+
+  user-select: none;
+  -moz-user-select: none;
 }
 
 input[type='checkbox'] {

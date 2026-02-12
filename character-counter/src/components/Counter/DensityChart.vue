@@ -5,40 +5,52 @@ import { useCounterStore } from '@/stores/counter';
 
 const store = useCounterStore();
 
+const showAll = ref(false);
+const toggleExpand = () => {
+  showAll.value = !showAll.value;
+};
+
 const charMap = ref(new Map<string, number>());
 
+const characters = computed(() => {
+  return store.getCharacters({ spaces: false, punctuation: false });
+});
+
 const charArr = computed(() => {
-  charMap.value.clear()
-  store.characters.chars.split('').forEach((char) => {
+  charMap.value.clear();
+
+  characters.value.chars.split('').forEach((char) => {
     if (char.match(/[a-zA-z]/)) {
       charMap.value.set(char, (charMap.value.get(char) ?? 0) + 1);
     }
-  })
+  });
 
   return Array.from(charMap.value.entries())
     .sort((a, b) => b[1] - a[1])
     .map((pair) => ({
       ...pair,
-      percent: (pair[1] / store.characters.count) * 100,
+      percent: (pair[1] / characters.value.count) * 100,
     }));
-})
+});
 </script>
 
 <template>
   <div class="density">
     <h3>Letter Density</h3>
 
-    <p v-if="store.characters.count < 1">
-      No characters found. Start typing to see letter density.
-    </p>
+    <p v-if="characters.count < 1">No characters found. Start typing to see letter density.</p>
 
-    <div v-else class="density-item-list">
-      <div class="density-item" v-for="val in charArr">
-        <span class="density-letter text-md">{{ val[0] }}</span>
-        <div class="density-bar">
-          <div class="bar-fill" :style="{ width: `${val.percent}%` }" />
+    <div v-else class="wrapper">
+      <div :class="['density-item-list', { expanded: showAll }]">
+        <div class="density-item" v-for="val in charArr.slice(0, showAll ? undefined : 5)">
+          <span class="density-letter text-md">{{ val[0] }}</span>
+          <div class="density-bar">
+            <div class="bar-fill" :style="{ width: `${val.percent}%` }" />
+          </div>
+          <span class="density-count text-md">{{ `${val[1]} (${val.percent.toFixed(2)}%)` }}</span>
         </div>
-        <span class="density-count text-md">{{ `${val[1]} (${val.percent.toFixed(2)}%)` }}</span>
+
+        <button @click="toggleExpand" class="expand-btn">See more</button>
       </div>
     </div>
   </div>
@@ -57,6 +69,11 @@ const charArr = computed(() => {
   flex-direction: column;
   gap: 0.75rem;
 }
+
+.density-item-list.expanded {
+  grid-template-rows: auto;
+}
+
 .density-item {
   width: 100%;
   display: grid;
@@ -87,5 +104,10 @@ const charArr = computed(() => {
 
   border-radius: var(--radius-full);
   background-color: var(--color-accent);
+  transition: all 0.2s;
+}
+
+.expand-btn {
+  width: fit-content;
 }
 </style>
