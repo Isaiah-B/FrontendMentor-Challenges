@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import { storeToRefs } from 'pinia';
 
 import { useCounterStore } from '@/stores/counter';
@@ -7,14 +7,28 @@ import { useCounterStore } from '@/stores/counter';
 import Filter from './Filter.vue';
 import Card from './Card.vue';
 import DensityChart from './DensityChart.vue';
+import IconInfo from '../Icons/IconInfo.vue';
 
 const store = useCounterStore();
 
-const { charLimit } = storeToRefs(store);
+const { text, charLimit } = storeToRefs(store);
 
 const excludeSpaces = ref(false);
 
-const textareaMaxLength = charLimit.value.hasLimit ? charLimit.value.limit : undefined;
+const textareaMaxLength = computed(() =>
+  charLimit.value.hasLimit
+    ? charLimit.value.limit
+    : undefined
+);
+
+const showError = computed(() => {
+  if (charLimit.value.hasLimit) {
+    return text.value.length > charLimit.value.limit;
+  }
+
+  return false;
+});
+
 </script>
 
 <template>
@@ -27,10 +41,20 @@ const textareaMaxLength = charLimit.value.hasLimit ? charLimit.value.limit : und
       placeholder="Start typing here… (or paste your text)"
     />
 
+    <div v-if="showError" class="error-message text-md">
+      <IconInfo />
+      Limit reached! Your text exceeds {{ charLimit.limit }} characters.
+    </div>
+
     <div class="textarea-footer">
       <div class="filters">
-        <Filter label="Exclude Spaces" v-model="excludeSpaces" />
-        <Filter label="Set Character Limit" v-model="store.charLimit.hasLimit" />
+        <Filter label="Exclude Spaces" v-model:model-value="excludeSpaces" />
+        <Filter
+          label="Set Character Limit"
+          v-model:model-value="charLimit.hasLimit"
+          v-model:input-value="charLimit.limit"
+          has-input
+        />
       </div>
 
       <span>Approx. reading time: {{ store.readTime }}</span>
@@ -80,6 +104,15 @@ const textareaMaxLength = charLimit.value.hasLimit ? charLimit.value.limit : und
   justify-content: space-between;
   width: 100%;
   margin-top: 1rem;
+}
+
+.error-message {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+
+  color: var(--color-error);
 }
 
 .filters {

@@ -1,16 +1,21 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
 
+import IconChevron from '../Icons/IconChevron.vue';
+
 import { useCounterStore } from '@/stores/counter';
+
+const PREVIEW_LEN = 5;
 
 const store = useCounterStore();
 
 const showAll = ref(false);
+const charMap = ref(new Map<string, number>());
+
 const toggleExpand = () => {
   showAll.value = !showAll.value;
 };
 
-const charMap = ref(new Map<string, number>());
 
 const characters = computed(() => {
   return store.getCharacters({ spaces: false, punctuation: false });
@@ -42,7 +47,7 @@ const charArr = computed(() => {
 
     <div v-else class="wrapper">
       <div :class="['density-item-list', { expanded: showAll }]">
-        <div class="density-item" v-for="val in charArr.slice(0, showAll ? undefined : 5)">
+        <div class="density-item" v-for="val in charArr.slice(0, showAll ? undefined : PREVIEW_LEN)">
           <span class="density-letter text-md">{{ val[0] }}</span>
           <div class="density-bar">
             <div class="bar-fill" :style="{ width: `${val.percent}%` }" />
@@ -50,7 +55,10 @@ const charArr = computed(() => {
           <span class="density-count text-md">{{ `${val[1]} (${val.percent.toFixed(2)}%)` }}</span>
         </div>
 
-        <button @click="toggleExpand" class="expand-btn">See more</button>
+        <button @click="toggleExpand" class="expand-btn">
+          See more
+          <IconChevron />
+        </button>
       </div>
     </div>
   </div>
@@ -90,7 +98,7 @@ const charArr = computed(() => {
 .density-bar {
   position: relative;
   width: 100%;
-  background-color: var(--color-input);
+  background-color: var(--color-primary);
   border-radius: var(--radius-full);
   height: 0.75rem;
 }
@@ -109,5 +117,9 @@ const charArr = computed(() => {
 
 .expand-btn {
   width: fit-content;
+}
+.expand-btn svg {
+  fill: var(--color-text);
+  margin-left: 0.375rem;
 }
 </style>

@@ -67,11 +67,12 @@
   --color-header: var(--neutral-900);
   --card-foreground: var(--neutral-900);
   --color-border: var(--neutral-200);
-  --color-input: var(--neutral-100);
-  --color-input--hover: var(--neutral-200);
+  --color-primary: var(--neutral-100);
+  --color-primary--hover: var(--neutral-200);
   --color-accent: var(--purple-400);
 
   --checkbox-border: var(--neutral-900);
+  --input-border: var(--neutral-600);
 
   --background-image: url(/src/assets/images/bg-light-theme.png);
 }
@@ -82,11 +83,14 @@
   --color-header: var(--neutral-100);
   --card-foreground: var(--neutral-900);
   --color-border: var(--neutral-700);
-  --color-input: var(--neutral-800);
-  --color-input--hover: var(--neutral-700);
+  --color-primary: var(--neutral-800);
+  --color-primary--hover: var(--neutral-700);
   --color-accent: var(--purple-400);
-
+  --color-error: var(--orange-500);
+  --color-focus: var(--purple-500);
+  
   --checkbox-border: var(--white);
+  --input-border: var(--neutral-700);
 
   --background-image: url(/src/assets/images/bg-dark-theme.png);
 }
